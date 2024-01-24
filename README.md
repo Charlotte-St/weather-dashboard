@@ -1,1 +1,15 @@
-# weather-dashboard
+# Weather Dashboard
+
+## Description
+
+## Usage
+
+## Installation
+
+## Credits
+
+[Weather API provided by OpenWeather.](https://openweathermap.org)
+
+Bootstrap
+
+## License

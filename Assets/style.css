@@ -1,0 +1,9 @@
+.main-header {
+    background-color: blue;
+    color: white;
+    text-align: right;
+}
+.left-nav {
+    background-color: lightsteelblue;
+    border-radius: 10px;
+}
