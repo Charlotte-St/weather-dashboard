@@ -1,7 +1,8 @@
 var searchButtonEl = document.querySelector('#search-button');
-var geocodeQueryUrl
-var latResultVal
-var lonResultVal
+var geocodeQueryUrl;
+var latResultVal;
+var lonResultVal;
+var cityName;
 
 function geocodeApiQuery (){
     fetch(geocodeQueryUrl)
@@ -21,10 +22,12 @@ function geocodeApiQuery (){
             console.log(geoResults.lon);
             latResultVal = geoResults.lat;
             lonResultVal = geoResults.lon;
+            cityName = geoResults.name;
             console.log(latResultVal);
             console.log(lonResultVal);
+            console.log(cityName);
             var apiKey = '&appid=544a677c24a40aec4562a9114d5e303c';
-            var queryString = './search-results.html?lat=' + latResultVal + '&lon=' + lonResultVal + apiKey;
+            var queryString = './search-results.html?lat=' + latResultVal + '&lon=' + lonResultVal + '&city=' + cityName + apiKey;
             console.log(queryString);
             location.assign(queryString);
             return
