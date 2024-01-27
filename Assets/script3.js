@@ -26,6 +26,7 @@ function geocodeApiQuery (){
             var apiKey = '&appid=544a677c24a40aec4562a9114d5e303c';
             var queryString = './search-results.html?lat=' + latResultVal + '&lon=' + lonResultVal + apiKey;
             console.log(queryString);
+            location.assign(queryString);
             return
         })
 
