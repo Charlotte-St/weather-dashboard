@@ -1,5 +1,5 @@
 .main-header {
-    background-color: blue;
+    background-image: linear-gradient(to right, rgba(255,0,0,0), rgb(0, 85, 255));
     color: white;
     text-align: right;
 }
