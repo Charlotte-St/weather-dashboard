@@ -23,7 +23,10 @@ function geocodeApiQuery (){
             lonResultVal = geoResults.lon;
             console.log(latResultVal);
             console.log(lonResultVal);
-
+            var apiKey = '&appid=544a677c24a40aec4562a9114d5e303c';
+            var queryString = './search-results.html?lat=' + latResultVal + '&lon=' + lonResultVal + apiKey;
+            console.log(queryString);
+            return
         })
 
 }
@@ -41,10 +44,11 @@ function handleSearchFormSubmit(event) {
   console.log(searchInputVal);
   var geocodeBaseUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=';
   var cityName = searchInputVal;
-  var apiKey = '&appid=544a677c24a40aec4562a9114d5e303c'
+  var apiKey = '&appid=544a677c24a40aec4562a9114d5e303c';
   geocodeQueryUrl = geocodeBaseUrl + cityName + apiKey;
   console.log(geocodeQueryUrl);
   geocodeApiQuery();
+
 
 }
 
