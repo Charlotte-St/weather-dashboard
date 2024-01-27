@@ -1,5 +1,32 @@
 var searchButtonEl = document.querySelector('#search-button');
 var geocodeQueryUrl
+var latResultVal
+var lonResultVal
+
+function geocodeApiQuery (){
+    fetch(geocodeQueryUrl)
+        .then(function(response){
+            if (!response.ok) {
+                throw response.json();
+            }
+            return response.json();
+        })
+        .then(function(geoRes) {
+            console.log(geoRes)
+            return geoRes
+        })
+        .then(function(resultObj){
+            var geoResults = resultObj[0];
+            console.log(geoResults.lat);
+            console.log(geoResults.lon);
+            latResultVal = geoResults.lat;
+            lonResultVal = geoResults.lon;
+            console.log(latResultVal);
+            console.log(lonResultVal);
+
+        })
+
+}
 
 function handleSearchFormSubmit(event) {
   event.preventDefault();
@@ -17,7 +44,10 @@ function handleSearchFormSubmit(event) {
   var apiKey = '&appid=544a677c24a40aec4562a9114d5e303c'
   geocodeQueryUrl = geocodeBaseUrl + cityName + apiKey;
   console.log(geocodeQueryUrl);
+  geocodeApiQuery();
 
 }
+
+
 
 searchButtonEl.addEventListener('click', handleSearchFormSubmit);
