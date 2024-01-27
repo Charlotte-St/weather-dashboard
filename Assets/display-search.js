@@ -46,6 +46,22 @@ function printCurrentWeather(resultObj) {
     cityEl.textContent = cityCurrentVal;
 
     currentCardBody.append(cityEl);
+    //mainContentEl.append(currentCard);
+
+    //var currentDate = new Date(resultObj.dt).toLocalTimeString("en-US");
+    var currentDate = dayjs().format('MM-DD-YYYY');
+    console.log(currentDate);
+    currentCardBody.append(currentDate);
+
+    var currIcon = resultObj.weather[0].icon;
+    console.log(currIcon);
+    var currIconUrl = 'https://openweathermap.org/img/wn/' + currIcon + '@2x.png';
+    console.log(currIconUrl);
+
+    var currIconPrint = document.createElement('img');
+    currIconPrint.src = currIconUrl;
+    currentCardBody.append(currIconPrint);
+
     mainContentEl.append(currentCard);
 }
 
