@@ -4,6 +4,7 @@ var lonCurrentVal;
 var cityCurrentVal;
 var apiKey = '&appid=544a677c24a40aec4562a9114d5e303c';
 var currentWeather; 
+var forecastWeather;
 
 //mainContentEl.textContent = 'Weather Forecast';
 
@@ -63,17 +64,13 @@ function printCurrentWeather(resultObj) {
     currentCardBody.append(currIconPrint);
 
     var currTemp = document.createElement('div');
-    var tempKel = resultObj.main.temp;
-    console.log(tempKel);
-    var tempF = (((tempKel-273.15)*1.8)+32).toFixed(2);
-    console.log(tempF);
-    currTemp.textContent = 'Temp: ' + tempF + 'F';
+    var temp = resultObj.main.temp;
+    console.log(temp);
+    currTemp.textContent = 'Temp: ' + temp + 'F';
     currentCardBody.append(currTemp);
 
     var currWind = document.createElement('div');
-    var windMet = resultObj.wind.speed;
-    console.log(windMet);
-    var windMph = (windMet * 2.2369).toFixed(2);
+    var windMph = resultObj.wind.speed;
     console.log(windMph);
     currWind.textContent = 'Wind: ' + windMph + 'MPH';
     currentCardBody.append(currWind);
@@ -87,6 +84,10 @@ function printCurrentWeather(resultObj) {
     mainContentEl.append(currentCard);
 }
 
+function printForecast(resultObj) {
+    console.log(resultObj);
+}
+
 function printWeather() {
     printCurrentWeather(currentWeather);
 }
@@ -97,7 +98,7 @@ function searchCurrentApi(lat, lon) {
 
     //https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
 
-    currentQueryUrl = currentQueryUrl + 'lat=' + lat + '&lon=' + lon + apiKey;
+    currentQueryUrl = currentQueryUrl + 'lat=' + lat + '&lon=' + lon + '&units=imperial' + apiKey;
     console.log(currentQueryUrl)
 
     fetch(currentQueryUrl)
@@ -125,9 +126,33 @@ function searchCurrentApi(lat, lon) {
 
 searchCurrentApi(latCurrentVal, lonCurrentVal);
 
-//Write current weather to page
-
 //Get 5 day forecast from API
+function searchForecastApi(lat, lon) {
+    var currentQueryUrl = 'https://api.openweathermap.org/data/2.5/forecast?';
+    currentQueryUrl = currentQueryUrl + 'lat=' + lat + '&lon=' + lon + '&units=imperial' + apiKey;
+    console.log(currentQueryUrl)
+
+    fetch(currentQueryUrl)
+        .then(function(response){
+            if (!response.ok) {
+                throw response.json();
+            }
+            return response.json()
+        })
+        .then(function (currRes){
+            //console.log(currRes)
+            forecastWeather = currRes;
+            //if (!currRes.results){
+                //mainContentEl.innerHTML = '<h3>City not found. Please try again.</h3>'
+           // }
+
+           console.log(forecastWeather);
+           //printWeather();
+}
+        )
+}
+
+searchForecastApi(latCurrentVal, lonCurrentVal);
 
 // Write 5 day forecast to page
 
