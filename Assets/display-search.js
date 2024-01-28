@@ -218,11 +218,11 @@ function addHistoryButtons () {
     if (weatherHistory){
         for (i = 0; i < weatherHistory.length; i++){
             console.log(weatherHistory[i])
-            var cityButton = document.createElement('button');
-            cityButton.classList.add('btn');
-            cityButton.textContent = weatherHistory[i].city;
+            var cityLink = document.createElement('div');
+            //cityLink.classList.add('');
+            cityLink.innerHTML = '<a href="./search-results.html?lat=' + weatherHistory[i].lat + '&lon=' + weatherHistory[i].lon + '&city=' + weatherHistory[i].city + apiKey + '">' + weatherHistory[i].city + '</a>';
 
-            searchHistoryEl.append(cityButton);
+            searchHistoryEl.append(cityLink);
         }
     }
 }
