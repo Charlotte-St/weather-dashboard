@@ -20,24 +20,11 @@ function getParams() {
     latCurrentVal = lat;
     lonCurrentVal = lon;
     cityCurrentVal = city;
-    //console.log(lat);
-    //console.log(lon);
-    //console.log(city);
 
 }
 
 getParams();
 
-// Clear lat and lon on new search
-function clearVals() {
-    latCurrentVal = '';
-    lonCurrentVal = '';
-    cityCurrentVal = '';
-};
-
-//clearVals();
-
-//print current weather
 function printCurrentWeather(resultObj) {
     var currentCard = document.createElement('div');
     currentCard.classList.add('card', 'col-sm-10');
@@ -46,23 +33,17 @@ function printCurrentWeather(resultObj) {
     currentCardBody.classList.add('card-body');
     currentCard.append(currentCardBody);
 
-    //console.log(resultObj);
 
     var cityEl = document.createElement('h4');
     cityEl.textContent = cityCurrentVal;
 
     currentCardBody.append(cityEl);
-    //mainContentEl.append(currentCard);
 
-    //var currentDate = new Date(resultObj.dt).toLocalTimeString("en-US");
     var currentDate = dayjs().format('MM-DD-YYYY');
-    //console.log(currentDate);
     currentCardBody.append(currentDate);
 
     var currIcon = resultObj.weather[0].icon;
-    //console.log(currIcon);
     var currIconUrl = 'https://openweathermap.org/img/wn/' + currIcon + '@2x.png';
-    //console.log(currIconUrl);
 
     var currIconPrint = document.createElement('img');
     currIconPrint.src = currIconUrl;
@@ -70,19 +51,16 @@ function printCurrentWeather(resultObj) {
 
     var currTemp = document.createElement('div');
     var temp = resultObj.main.temp;
-    //console.log(temp);
     currTemp.textContent = 'Temp: ' + temp + 'F';
     currentCardBody.append(currTemp);
 
     var currWind = document.createElement('div');
     var windMph = resultObj.wind.speed;
-    //console.log(windMph);
     currWind.textContent = 'Wind: ' + windMph + 'MPH';
     currentCardBody.append(currWind);
 
     var currHumidity = document.createElement('div');
     var currHumidityVal = resultObj.main.humidity;
-    //console.log(currHumidityVal);
     currHumidity.textContent = 'Humidity: ' + currHumidityVal + '%';
     currentCardBody.append(currHumidity);
 
@@ -90,13 +68,8 @@ function printCurrentWeather(resultObj) {
 }
 
 function printForecastWeather(resultObj){
-    //console.log(resultObj);
-    //console.log(resultObj.list[0].dt_txt.split(" ")[1]);
-    //console.log(resultObj.list.length);
     for (var i=0; i < resultObj.list.length; i++) {
         if (resultObj.list[i].dt_txt.split(' ')[1] === "12:00:00"){
-       //console.log(resultObj.list[i].dt_txt.split(" ")[1]);
-    //}
        var forecastCard = document.createElement('div');
        forecastCard.classList.add('card', 'col-sm-2');
        var forecastTemp = resultObj.list[i].main.temp;
@@ -105,7 +78,6 @@ function printForecastWeather(resultObj){
        var forecastIconUrl = 'https://openweathermap.org/img/wn/' + forecastIcon + '.png';
        var forecastWind = resultObj.list[i].wind.speed;
        var forecastHumidity = resultObj.list[i].main.humidity;
-       //console.log(forecastIcon);
         forecastCard.innerHTML = forecastDate + '</br><img src="' + forecastIconUrl + '"></br>Temp: ' + forecastTemp + 'F</br>Wind: ' + forecastWind + 'MPH</br>Humidity:' + forecastHumidity + '%';
 
        forecastContentEl.append(forecastCard);}
@@ -124,10 +96,7 @@ function printWeatherForecast(){
 function searchCurrentApi(lat, lon) {
     var currentQueryUrl = 'https://api.openweathermap.org/data/2.5/weather?';
 
-    //https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
-
     currentQueryUrl = currentQueryUrl + 'lat=' + lat + '&lon=' + lon + '&units=imperial' + apiKey;
-    //console.log(currentQueryUrl)
 
     fetch(currentQueryUrl)
         .then(function(response){
@@ -137,17 +106,9 @@ function searchCurrentApi(lat, lon) {
             return response.json()
         })
         .then(function (currRes){
-            //console.log(currRes)
             currentWeather = currRes;
-            //if (!currRes.results){
-                //mainContentEl.innerHTML = '<h3>City not found. Please try again.</h3>'
-           // }
-
-           //console.log(currentWeather);
            printWeather();
         }
-        
-
         )
        
 }
@@ -158,7 +119,6 @@ searchCurrentApi(latCurrentVal, lonCurrentVal);
 function searchForecastApi(lat, lon) {
     var currentQueryUrl = 'https://api.openweathermap.org/data/2.5/forecast?';
     currentQueryUrl = currentQueryUrl + 'lat=' + lat + '&lon=' + lon + '&units=imperial' + apiKey;
-    //console.log(currentQueryUrl)
 
     fetch(currentQueryUrl)
         .then(function(response){
@@ -168,13 +128,8 @@ function searchForecastApi(lat, lon) {
             return response.json()
         })
         .then(function (forecastRes){
-            //console.log(currRes)
             forecastWeather = forecastRes;
-            //if (!currRes.results){
-                //mainContentEl.innerHTML = '<h3>City not found. Please try again.</h3>'
-           // }
-
-           //console.log(forecastWeather);
+          
            printWeatherForecast();
 }
         )
@@ -198,28 +153,24 @@ function readStoredWeather() {
 
 function addToHistory(){
     var weatherHistory = readStoredWeather();
-    //console.log(weatherHistory);
     if (latCurrentVal !== 0 && lonCurrentVal !==0){
-        //console.log('Saving...')
         var location = {
             lat: latCurrentVal,
             lon: lonCurrentVal,
             city: cityCurrentVal
         };
-        weatherHistory.push(location);
-        //console.log(weatherHistory);
+        weatherHistory.unshift(location);
         localStorage.setItem('weatherHistory', JSON.stringify(weatherHistory));
     }
 }
 
 addToHistory();
-//Add buttons for cities in local storage to side bar
 function addHistoryButtons () {
     if (weatherHistory){
         for (i = 0; i < weatherHistory.length; i++){
             console.log(weatherHistory[i])
-            var cityLink = document.createElement('div');
-            //cityLink.classList.add('');
+            var cityLink = document.createElement('li');
+            cityLink.classList.add('list-group-item');
             cityLink.innerHTML = '<a href="./search-results.html?lat=' + weatherHistory[i].lat + '&lon=' + weatherHistory[i].lon + '&city=' + weatherHistory[i].city + apiKey + '">' + weatherHistory[i].city + '</a>';
 
             searchHistoryEl.append(cityLink);
@@ -229,4 +180,3 @@ function addHistoryButtons () {
 
 addHistoryButtons();
 
-// new search from side bar

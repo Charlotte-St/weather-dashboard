@@ -11,3 +11,7 @@
 #main-weather {
     background-color: dodgerblue;
 }
+
+.card img {
+    width: 40px;
+}
