@@ -1,12 +1,13 @@
 var mainContentEl = document.getElementById('main-weather');
 var forecastContentEl = document.getElementById('forecast-cards');
+var searchHistoryEl = document.getElementById('search-history');
 var latCurrentVal;
 var lonCurrentVal;
 var cityCurrentVal;
 var apiKey = '&appid=544a677c24a40aec4562a9114d5e303c';
 var currentWeather; 
 var forecastWeather;
-
+var weatherHistory = [];
 
 //mainContentEl.textContent = 'Weather Forecast';
 
@@ -15,13 +16,14 @@ function getParams() {
 
     var lat = searchParamsArr[0].split('=').pop();
     var lon = searchParamsArr[1].split('=').pop();
-    var city = searchParamsArr[2].split('=').pop()
+    var city = searchParamsArr[2].split('=').pop().split('%20').join(' ');
     latCurrentVal = lat;
     lonCurrentVal = lon;
     cityCurrentVal = city;
     //console.log(lat);
     //console.log(lon);
     //console.log(city);
+
 }
 
 getParams();
@@ -30,6 +32,7 @@ getParams();
 function clearVals() {
     latCurrentVal = '';
     lonCurrentVal = '';
+    cityCurrentVal = '';
 };
 
 //clearVals();
@@ -87,12 +90,12 @@ function printCurrentWeather(resultObj) {
 }
 
 function printForecastWeather(resultObj){
-    console.log(resultObj);
-    console.log(resultObj.list[0].dt_txt.split(" ")[1]);
-    console.log(resultObj.list.length);
+    //console.log(resultObj);
+    //console.log(resultObj.list[0].dt_txt.split(" ")[1]);
+    //console.log(resultObj.list.length);
     for (var i=0; i < resultObj.list.length; i++) {
         if (resultObj.list[i].dt_txt.split(' ')[1] === "12:00:00"){
-       console.log(resultObj.list[i].dt_txt.split(" ")[1]);
+       //console.log(resultObj.list[i].dt_txt.split(" ")[1]);
     //}
        var forecastCard = document.createElement('div');
        forecastCard.classList.add('card', 'col-sm-2');
@@ -116,11 +119,6 @@ function printWeather() {
 function printWeatherForecast(){
     printForecastWeather(forecastWeather);
 }
-
-//Print weather forecast
-
-//printForecast();
-
 
 //Get current weather data from API
 function searchCurrentApi(lat, lon) {
@@ -184,35 +182,51 @@ function searchForecastApi(lat, lon) {
 
 searchForecastApi(latCurrentVal, lonCurrentVal);
 
-// Write 5 day forecast to page
-//function printForecastWeather(resultObj){
-    //console.log(resultObj);
-    //console.log(resultObj.list[0].dt_txt.split(" ")[1]);
-    //console.log(resultObj.list.length);
-    //for (var i=0; i < resultObj.length; i++) {
-      //  console.log(resultObj.list[i].dt_txt.split(" ")[1]);
-    //}
-//}
-//function printForecast(forecastWeather) {
-  //  console.log(forecastWeather);
-    //console.log(forecastWeather.list);
-//}
 
-//printForecast(forecastWeather);
-//Add current city to local Storage
+function readStoredWeather() {
+    var history = localStorage.getItem('weatherHistory');
+    if (history) {
+      weatherHistory = JSON.parse(history);
+    } else {
+      weatherHistory = [];
+    }
+    return weatherHistory;
+  }
+
+  readStoredWeather();
+
+
 function addToHistory(){
+    var weatherHistory = readStoredWeather();
+    //console.log(weatherHistory);
     if (latCurrentVal !== 0 && lonCurrentVal !==0){
-        console.log('Saving...')
+        //console.log('Saving...')
         var location = {
             lat: latCurrentVal,
             lon: lonCurrentVal,
             city: cityCurrentVal
         };
-        localStorage.setItem('Weather', JSON.stringify(location));
+        weatherHistory.push(location);
+        //console.log(weatherHistory);
+        localStorage.setItem('weatherHistory', JSON.stringify(weatherHistory));
     }
 }
 
 addToHistory();
 //Add buttons for cities in local storage to side bar
+function addHistoryButtons () {
+    if (weatherHistory){
+        for (i = 0; i < weatherHistory.length; i++){
+            console.log(weatherHistory[i])
+            var cityButton = document.createElement('button');
+            cityButton.classList.add('btn');
+            cityButton.textContent = weatherHistory[i].city;
+
+            searchHistoryEl.append(cityButton);
+        }
+    }
+}
+
+addHistoryButtons();
 
 // new search from side bar
