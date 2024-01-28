@@ -1,4 +1,5 @@
 var mainContentEl = document.getElementById('main-weather');
+var forecastContentEl = document.getElementById('forecast-cards');
 var latCurrentVal;
 var lonCurrentVal;
 var cityCurrentVal;
@@ -94,9 +95,17 @@ function printForecastWeather(resultObj){
        console.log(resultObj.list[i].dt_txt.split(" ")[1]);
     //}
        var forecastCard = document.createElement('div');
-       //forecastWeather.classList.add('card', 'col-sm-3');
-    forecastCard.textContent = resultObj.list[i].main.temp;
-       mainContentEl.append(forecastCard);}
+       forecastCard.classList.add('card', 'col-sm-2');
+       var forecastTemp = resultObj.list[i].main.temp;
+       var forecastDate = resultObj.list[i].dt_txt.split(" ")[0];
+       var forecastIcon = resultObj.list[i].weather[0].icon;
+       var forecastIconUrl = 'https://openweathermap.org/img/wn/' + forecastIcon + '.png';
+       var forecastWind = resultObj.list[i].wind.speed;
+       var forecastHumidity = resultObj.list[i].main.humidity;
+       //console.log(forecastIcon);
+        forecastCard.innerHTML = forecastDate + '</br><img src="' + forecastIconUrl + '"></br>Temp: ' + forecastTemp + 'F</br>Wind: ' + forecastWind + 'MPH</br>Humidity:' + forecastHumidity;
+
+       forecastContentEl.append(forecastCard);}
     }
 }
 
