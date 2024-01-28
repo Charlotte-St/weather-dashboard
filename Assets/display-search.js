@@ -103,7 +103,7 @@ function printForecastWeather(resultObj){
        var forecastWind = resultObj.list[i].wind.speed;
        var forecastHumidity = resultObj.list[i].main.humidity;
        //console.log(forecastIcon);
-        forecastCard.innerHTML = forecastDate + '</br><img src="' + forecastIconUrl + '"></br>Temp: ' + forecastTemp + 'F</br>Wind: ' + forecastWind + 'MPH</br>Humidity:' + forecastHumidity;
+        forecastCard.innerHTML = forecastDate + '</br><img src="' + forecastIconUrl + '"></br>Temp: ' + forecastTemp + 'F</br>Wind: ' + forecastWind + 'MPH</br>Humidity:' + forecastHumidity + '%';
 
        forecastContentEl.append(forecastCard);}
     }
@@ -200,7 +200,19 @@ searchForecastApi(latCurrentVal, lonCurrentVal);
 
 //printForecast(forecastWeather);
 //Add current city to local Storage
+function addToHistory(){
+    if (latCurrentVal !== 0 && lonCurrentVal !==0){
+        console.log('Saving...')
+        var location = {
+            lat: latCurrentVal,
+            lon: lonCurrentVal,
+            city: cityCurrentVal
+        };
+        localStorage.setItem('Weather', JSON.stringify(location));
+    }
+}
 
+addToHistory();
 //Add buttons for cities in local storage to side bar
 
 // new search from side bar
