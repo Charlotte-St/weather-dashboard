@@ -62,6 +62,28 @@ function printCurrentWeather(resultObj) {
     currIconPrint.src = currIconUrl;
     currentCardBody.append(currIconPrint);
 
+    var currTemp = document.createElement('div');
+    var tempKel = resultObj.main.temp;
+    console.log(tempKel);
+    var tempF = (((tempKel-273.15)*1.8)+32).toFixed(2);
+    console.log(tempF);
+    currTemp.textContent = 'Temp: ' + tempF + 'F';
+    currentCardBody.append(currTemp);
+
+    var currWind = document.createElement('div');
+    var windMet = resultObj.wind.speed;
+    console.log(windMet);
+    var windMph = (windMet * 2.2369).toFixed(2);
+    console.log(windMph);
+    currWind.textContent = 'Wind: ' + windMph + 'MPH';
+    currentCardBody.append(currWind);
+
+    var currHumidity = document.createElement('div');
+    var currHumidityVal = resultObj.main.humidity;
+    console.log(currHumidityVal);
+    currHumidity.textContent = 'Humidity: ' + currHumidityVal + '%';
+    currentCardBody.append(currHumidity);
+
     mainContentEl.append(currentCard);
 }
 
