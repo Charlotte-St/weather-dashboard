@@ -6,6 +6,7 @@ var apiKey = '&appid=544a677c24a40aec4562a9114d5e303c';
 var currentWeather; 
 var forecastWeather;
 
+
 //mainContentEl.textContent = 'Weather Forecast';
 
 function getParams() {
@@ -17,9 +18,9 @@ function getParams() {
     latCurrentVal = lat;
     lonCurrentVal = lon;
     cityCurrentVal = city;
-    console.log(lat);
-    console.log(lon);
-    console.log(city);
+    //console.log(lat);
+    //console.log(lon);
+    //console.log(city);
 }
 
 getParams();
@@ -41,7 +42,7 @@ function printCurrentWeather(resultObj) {
     currentCardBody.classList.add('card-body');
     currentCard.append(currentCardBody);
 
-    console.log(resultObj);
+    //console.log(resultObj);
 
     var cityEl = document.createElement('h4');
     cityEl.textContent = cityCurrentVal;
@@ -51,13 +52,13 @@ function printCurrentWeather(resultObj) {
 
     //var currentDate = new Date(resultObj.dt).toLocalTimeString("en-US");
     var currentDate = dayjs().format('MM-DD-YYYY');
-    console.log(currentDate);
+    //console.log(currentDate);
     currentCardBody.append(currentDate);
 
     var currIcon = resultObj.weather[0].icon;
-    console.log(currIcon);
+    //console.log(currIcon);
     var currIconUrl = 'https://openweathermap.org/img/wn/' + currIcon + '@2x.png';
-    console.log(currIconUrl);
+    //console.log(currIconUrl);
 
     var currIconPrint = document.createElement('img');
     currIconPrint.src = currIconUrl;
@@ -65,32 +66,52 @@ function printCurrentWeather(resultObj) {
 
     var currTemp = document.createElement('div');
     var temp = resultObj.main.temp;
-    console.log(temp);
+    //console.log(temp);
     currTemp.textContent = 'Temp: ' + temp + 'F';
     currentCardBody.append(currTemp);
 
     var currWind = document.createElement('div');
     var windMph = resultObj.wind.speed;
-    console.log(windMph);
+    //console.log(windMph);
     currWind.textContent = 'Wind: ' + windMph + 'MPH';
     currentCardBody.append(currWind);
 
     var currHumidity = document.createElement('div');
     var currHumidityVal = resultObj.main.humidity;
-    console.log(currHumidityVal);
+    //console.log(currHumidityVal);
     currHumidity.textContent = 'Humidity: ' + currHumidityVal + '%';
     currentCardBody.append(currHumidity);
 
     mainContentEl.append(currentCard);
 }
 
-function printForecast(resultObj) {
+function printForecastWeather(resultObj){
     console.log(resultObj);
+    console.log(resultObj.list[0].dt_txt.split(" ")[1]);
+    console.log(resultObj.list.length);
+    for (var i=0; i < resultObj.list.length; i++) {
+        if (resultObj.list[i].dt_txt.split(' ')[1] === "12:00:00"){
+       console.log(resultObj.list[i].dt_txt.split(" ")[1]);
+    //}
+       var forecastCard = document.createElement('div');
+       //forecastWeather.classList.add('card', 'col-sm-3');
+    forecastCard.textContent = resultObj.list[i].main.temp;
+       mainContentEl.append(forecastCard);}
+    }
 }
+
 
 function printWeather() {
     printCurrentWeather(currentWeather);
 }
+function printWeatherForecast(){
+    printForecastWeather(forecastWeather);
+}
+
+//Print weather forecast
+
+//printForecast();
+
 
 //Get current weather data from API
 function searchCurrentApi(lat, lon) {
@@ -99,7 +120,7 @@ function searchCurrentApi(lat, lon) {
     //https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
 
     currentQueryUrl = currentQueryUrl + 'lat=' + lat + '&lon=' + lon + '&units=imperial' + apiKey;
-    console.log(currentQueryUrl)
+    //console.log(currentQueryUrl)
 
     fetch(currentQueryUrl)
         .then(function(response){
@@ -109,13 +130,13 @@ function searchCurrentApi(lat, lon) {
             return response.json()
         })
         .then(function (currRes){
-            console.log(currRes)
+            //console.log(currRes)
             currentWeather = currRes;
             //if (!currRes.results){
                 //mainContentEl.innerHTML = '<h3>City not found. Please try again.</h3>'
            // }
 
-           console.log(currentWeather);
+           //console.log(currentWeather);
            printWeather();
         }
         
@@ -130,7 +151,7 @@ searchCurrentApi(latCurrentVal, lonCurrentVal);
 function searchForecastApi(lat, lon) {
     var currentQueryUrl = 'https://api.openweathermap.org/data/2.5/forecast?';
     currentQueryUrl = currentQueryUrl + 'lat=' + lat + '&lon=' + lon + '&units=imperial' + apiKey;
-    console.log(currentQueryUrl)
+    //console.log(currentQueryUrl)
 
     fetch(currentQueryUrl)
         .then(function(response){
@@ -139,15 +160,15 @@ function searchForecastApi(lat, lon) {
             }
             return response.json()
         })
-        .then(function (currRes){
+        .then(function (forecastRes){
             //console.log(currRes)
-            forecastWeather = currRes;
+            forecastWeather = forecastRes;
             //if (!currRes.results){
                 //mainContentEl.innerHTML = '<h3>City not found. Please try again.</h3>'
            // }
 
-           console.log(forecastWeather);
-           //printWeather();
+           //console.log(forecastWeather);
+           printWeatherForecast();
 }
         )
 }
@@ -155,7 +176,20 @@ function searchForecastApi(lat, lon) {
 searchForecastApi(latCurrentVal, lonCurrentVal);
 
 // Write 5 day forecast to page
+//function printForecastWeather(resultObj){
+    //console.log(resultObj);
+    //console.log(resultObj.list[0].dt_txt.split(" ")[1]);
+    //console.log(resultObj.list.length);
+    //for (var i=0; i < resultObj.length; i++) {
+      //  console.log(resultObj.list[i].dt_txt.split(" ")[1]);
+    //}
+//}
+//function printForecast(forecastWeather) {
+  //  console.log(forecastWeather);
+    //console.log(forecastWeather.list);
+//}
 
+//printForecast(forecastWeather);
 //Add current city to local Storage
 
 //Add buttons for cities in local storage to side bar
