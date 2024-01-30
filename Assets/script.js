@@ -4,6 +4,7 @@ var latResultVal;
 var lonResultVal;
 var cityName;
 
+//Gets data from the API
 function geocodeApiQuery (){
     fetch(geocodeQueryUrl)
         .then(function(response){
@@ -18,22 +19,18 @@ function geocodeApiQuery (){
         })
         .then(function(resultObj){
             var geoResults = resultObj[0];
-            console.log(geoResults.lat);
-            console.log(geoResults.lon);
             latResultVal = geoResults.lat;
             lonResultVal = geoResults.lon;
             cityName = geoResults.name;
-            console.log(latResultVal);
-            console.log(lonResultVal);
-            console.log(cityName);
             var apiKey = '&appid=544a677c24a40aec4562a9114d5e303c';
             var queryString = './search-results.html?lat=' + latResultVal + '&lon=' + lonResultVal + '&city=' + cityName + apiKey;
-            console.log(queryString);
             location.assign(queryString);
             return
         })
 
 }
+
+//Handles search, including constructing query string
 
 function handleSearchFormSubmit(event) {
   event.preventDefault();
@@ -45,12 +42,10 @@ function handleSearchFormSubmit(event) {
     return;
   }
 
-  console.log(searchInputVal);
-  var geocodeBaseUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=';
+  var geocodeBaseUrl = 'https://api.openweathermap.org/geo/1.0/direct?q=';
   var cityName = searchInputVal;
   var apiKey = '&appid=544a677c24a40aec4562a9114d5e303c';
   geocodeQueryUrl = geocodeBaseUrl + cityName + apiKey;
-  console.log(geocodeQueryUrl);
   geocodeApiQuery();
 
 

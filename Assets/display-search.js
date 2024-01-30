@@ -9,7 +9,7 @@ var currentWeather;
 var forecastWeather;
 var weatherHistory = [];
 
-//mainContentEl.textContent = 'Weather Forecast';
+//Gets data from query string
 
 function getParams() {
     var searchParamsArr = document.location.search.split('&');
@@ -24,6 +24,8 @@ function getParams() {
 }
 
 getParams();
+
+//Prints API data to the main content of the page
 
 function printCurrentWeather(resultObj) {
     var currentCard = document.createElement('div');
@@ -92,7 +94,7 @@ function printWeatherForecast(){
     printForecastWeather(forecastWeather);
 }
 
-//Get current weather data from API
+//Gets current weather data from API
 function searchCurrentApi(lat, lon) {
     var currentQueryUrl = 'https://api.openweathermap.org/data/2.5/weather?';
 
@@ -115,7 +117,7 @@ function searchCurrentApi(lat, lon) {
 
 searchCurrentApi(latCurrentVal, lonCurrentVal);
 
-//Get 5 day forecast from API
+//Gets 5 day forecast from API
 function searchForecastApi(lat, lon) {
     var currentQueryUrl = 'https://api.openweathermap.org/data/2.5/forecast?';
     currentQueryUrl = currentQueryUrl + 'lat=' + lat + '&lon=' + lon + '&units=imperial' + apiKey;
@@ -137,6 +139,7 @@ function searchForecastApi(lat, lon) {
 
 searchForecastApi(latCurrentVal, lonCurrentVal);
 
+//Saves search to local storage and prints in search history list
 
 function readStoredWeather() {
     var history = localStorage.getItem('weatherHistory');
