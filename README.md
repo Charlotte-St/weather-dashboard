@@ -4,8 +4,11 @@
 
 The Weather Dashboard allows users to search for a city. After entering a city and clicking the search button, the user is sent to a results page populated with the current weather conditions for the chosen city and a five day forecast for the city. If the user searches for another city, the previously searched for city is added to their search history. 
 
-[screenshot of weather dashboard]()
+
+[screenshot of weather dashboard](/Assets/weather-dashboard.png)
+
 [Weather Dashboard: https://charlotte-st.github.io/weather-dashboard/](https://charlotte-st.github.io/weather-dashboard/)
+
 
 ## Usage
 
